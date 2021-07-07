@@ -1,4 +1,4 @@
-teps:
+steps:
     # Install dependencies
     - name: python
       entrypoint: pip
