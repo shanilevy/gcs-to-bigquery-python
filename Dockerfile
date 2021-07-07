@@ -13,5 +13,5 @@ RUN . /opt/venv/bin/activate && pip install -r requirements.txt
 
 # Run the application:
 COPY app.py .
-COPY credentials.json .
+#COPY credentials.json .
 CMD . /opt/venv/bin/activate && exec python app.py

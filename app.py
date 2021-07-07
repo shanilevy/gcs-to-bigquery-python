@@ -2,19 +2,19 @@ from google.cloud import bigquery
 from google.oauth2 import service_account
 
 project_id = "dataops-319100"
-key_path = "credentials.json"
+#key_path = "credentials.json"
 
-credentials = service_account.Credentials.from_service_account_file(
-    key_path, scopes=["https://www.googleapis.com/auth/cloud-platform"],
-)
+#credentials = service_account.Credentials.from_service_account_file(
+#    key_path, scopes=["https://www.googleapis.com/auth/cloud-platform"],
+#)
 
-client = bigquery.Client(credentials=credentials, project=credentials.project_id,)
+#client = bigquery.Client(credentials=credentials, project=credentials.project_id,)
 
 # Construct a BigQuery client object.
-#client = bigquery.Client()
+client = bigquery.Client()
     
 # TODO(developer): Set table_id to the ID of the table to create.
-table_id = "mhanline-sand07.dwh.wikipedia_pageviews_2021"
+table_id = "dataops-319100.dwh.wikipedia_pageviews_2021"
 
 job_config = bigquery.LoadJobConfig(
     schema=[
