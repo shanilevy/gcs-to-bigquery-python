@@ -1,0 +1,21 @@
+teps:
+    # Install dependencies
+    - name: python
+      entrypoint: pip
+      args: ["install", "-r", "requirements.txt", "--user"]
+  # [END cloudbuild_python_dependencies_yaml]
+  
+    # [START cloudbuild_python_image_yaml]
+    # Docker Build
+    - name: 'gcr.io/cloud-builders/docker'
+      id: "Build Container"
+      args: ['build', '--tag=gcr.io/dataops-319100/gcs-bq-image:latest', '.']
+      #args: ['build', '--tag=gcr.io/dataops-319100/gcs-bq-image:$SHORT_SHA', '.']
+    # [END cloudbuild_python_image_yaml]
+  
+    # [START cloudbuild_python_push_yaml]
+    # Docker push to Google Artifact Registry
+    - name: 'gcr.io/cloud-builders/docker'
+      id: "Push Container"
+      args: ['push', 'gcr.io/dataops-319100/gcs-bq-image:latest']
+    # [END cloudbuild_python_push_yaml]
