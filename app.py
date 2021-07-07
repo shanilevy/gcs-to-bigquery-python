@@ -1,7 +1,7 @@
 from google.cloud import bigquery
 from google.oauth2 import service_account
 
-project_id = "mhanline-sand07"
+project_id = "dataops-319100"
 key_path = "credentials.json"
 
 credentials = service_account.Credentials.from_service_account_file(
@@ -27,7 +27,7 @@ job_config = bigquery.LoadJobConfig(
     # The source format defaults to CSV, so the line below is optional.
     source_format=bigquery.SourceFormat.CSV,
 )
-uri = "gs://my-dataops-bucket-123/wikipedia_pageviews_2021-000000000000.csv"
+uri = "gs://tmer-dataops-bucket-123/wikipedia_pageviews_2021-000000000000.csv"
 
 load_job = client.load_table_from_uri(
     uri, table_id, job_config=job_config
