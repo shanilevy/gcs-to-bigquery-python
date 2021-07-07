@@ -2,6 +2,11 @@ from google.cloud import bigquery
 from google.oauth2 import service_account
 
 project_id = "dataops-319100"
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+port = 8080
+sock.bind(('', port)) # actually bind
+sock.listen(1)
 #key_path = "credentials.json"
 
 #credentials = service_account.Credentials.from_service_account_file(

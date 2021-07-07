@@ -13,6 +13,5 @@ RUN . /opt/venv/bin/activate && pip install -r requirements.txt
 
 # Run the application:
 COPY app.py .
-ENV PORT 8080
 #COPY credentials.json .
 CMD . /opt/venv/bin/activate && exec python app.py
