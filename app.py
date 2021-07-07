@@ -3,10 +3,7 @@ from google.oauth2 import service_account
 
 project_id = "dataops-319100"
 
-sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-port = 8080
-sock.bind(('', port)) # actually bind
-sock.listen(1)
+app = Flask(__name__)
 #key_path = "credentials.json"
 
 #credentials = service_account.Credentials.from_service_account_file(
@@ -42,4 +39,9 @@ load_job.result()  # Waits for the job to complete.
 
 destination_table = client.get_table(table_id)  # Make an API request.
 print("Loaded {} rows.".format(destination_table.num_rows))
+
+if __name__ == "__main__":
+    app.run(debug=True, host='0.0.0.0',
+            port=int(os.environ.get(
+                     'PORT', 8080)))
 # [END bigquery_load_table_gcs_csv]
