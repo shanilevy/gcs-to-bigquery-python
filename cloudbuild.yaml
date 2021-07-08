@@ -3,8 +3,8 @@ steps:
     - name: python
       entrypoint: pip
       args: ["install", "-r", "requirements.txt", "--user"]
-  # [END cloudbuild_python_dependencies_yaml]
-  
+    # [END cloudbuild_python_dependencies_yaml]
+
     # [START cloudbuild_python_image_yaml]
     # Docker Build
     - name: 'gcr.io/cloud-builders/docker'
@@ -19,3 +19,8 @@ steps:
       id: "Push Container"
       args: ['push', 'gcr.io/dataops-319100/gcs-bq-image:latest']
     # [END cloudbuild_python_push_yaml]
+    
+    # Deploy container image to Cloud Run
+    - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+      entrypoint: gcloud
+      args: ['run', 'deploy', 'gcs-to-bq', '--image', 'gcr.io/dataops-319100/gcs-bq-image:latest', '--region', 'us-central1', '--platform', 'managed']
