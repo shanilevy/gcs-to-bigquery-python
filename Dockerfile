@@ -15,4 +15,4 @@ RUN . /opt/venv/bin/activate && pip install -r requirements.txt
 COPY app.py .
 #COPY credentials.json .
 #CMD . /opt/venv/bin/activate && exec python app.py
-CMD  /opt/venv/bin/activate && exec gunicorn --bind :8080 app:app
+CMD  /opt/venv/bin/activate && exec gunicorn --bind :$PORT app:app
