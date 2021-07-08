@@ -40,6 +40,11 @@ load_job.result()  # Waits for the job to complete.
 destination_table = client.get_table(table_id)  # Make an API request.
 print("Loaded {} rows.".format(destination_table.num_rows))
 
+@app.route("/")
+def hello_world():
+    name = os.environ.get("NAME", "World")
+    return "Hello {}!".format(name)
+    
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0',
             port=int(os.environ.get(
