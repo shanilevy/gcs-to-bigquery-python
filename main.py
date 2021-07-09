@@ -16,7 +16,9 @@
 # [START run_helloworld_service]
 import os
 
-from flask import Flask
+from flask import Flask, request
+
+from cloudevents.http import from_http
 
 from google.cloud import bigquery
 from google.oauth2 import service_account
