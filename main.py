@@ -52,7 +52,7 @@ job_config = bigquery.LoadJobConfig(
     # The source format defaults to CSV, so the line below is optional.
     source_format=bigquery.SourceFormat.CSV,
 )
-uri = "gs://tmer-dataops-bucket-123/wikipedia_pageviews_2021-000000000002.csv"
+uri = "gs://tmer-dataops-bucket-123/wikipedia_pageviews_2021-000000000006.csv"
 
 load_job = client.load_table_from_uri(
     uri, table_id, job_config=job_config
