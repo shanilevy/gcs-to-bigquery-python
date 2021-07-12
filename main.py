@@ -102,7 +102,9 @@ def index():
         name = base64.b64decode(pubsub_message['data']).decode('utf-8').strip()
 
     resp = f"Hello, {name}! ID: {request.headers.get('ce-id')}"
-    print(resp)
+    url = name.SelfLink
+    resp2 = f"this is my link: {url}"
+    print(resp2)
 
     return (resp, 200)
 # [END eventarc_pubsub_handler]
