@@ -18,7 +18,7 @@ RUN . /opt/venv/bin/activate && pip install -r requirements.txt
 # For environments with multiple CPU cores, increase the number of workers
 # to be equal to the cores available.
 # Timeout is set to 0 to disable the timeouts of the workers to allow Cloud Run to handle instance scaling.
-CMD . /opt/venv/bin/activate && exec gunicorn --bind :8080 --workers 1 --threads 8 --timeout 0 main:app
+CMD . /opt/venv/bin/activate && exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 main:app
 
 # [END run_helloworld_dockerfile]
 # [END cloudrun_helloworld_dockerfile]
