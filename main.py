@@ -54,14 +54,14 @@ job_config = bigquery.LoadJobConfig(
 )
 uri = "gs://tmer-dataops-bucket-123/wikipedia_pageviews_2021-000000000002.csv"
 
-load_job = client.load_table_from_uri(
-    uri, table_id, job_config=job_config
-)  # Make an API request.
+#load_job = client.load_table_from_uri(
+#    uri, table_id, job_config=job_config
+#)  # Make an API request.
 
-load_job.result()  # Waits for the job to complete.
+#load_job.result()  # Waits for the job to complete.
 
-destination_table = client.get_table(table_id)  # Make an API request.
-print("Loaded {} rows.".format(destination_table.num_rows))
+#destination_table = client.get_table(table_id)  # Make an API request.
+#print("Loaded {} rows.".format(destination_table.num_rows))
 
 #@app.route("/")
 #def hello_world():
@@ -70,6 +70,7 @@ print("Loaded {} rows.".format(destination_table.num_rows))
 @app.route("/", methods=["POST"])
 def home():
     # create a CloudEvent
+    print("This is POST command")
     event = from_http(request.headers, request.get_data())
 
     # you can access cloudevent fields as seen below
