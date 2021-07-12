@@ -55,14 +55,14 @@ job_config = bigquery.LoadJobConfig(
 )
 uri = "gs://tmer-dataops-bucket-123/wikipedia_pageviews_2021-000000000006.csv"
 
-load_job = client.load_table_from_uri(
-    uri, table_id, job_config=job_config
-)  # Make an API request.
+#load_job = client.load_table_from_uri(
+#    uri, table_id, job_config=job_config
+#)  # Make an API request.
 
-load_job.result()  # Waits for the job to complete.
+#load_job.result()  # Waits for the job to complete.
 
-destination_table = client.get_table(table_id)  # Make an API request.
-print("Loaded {} rows.".format(destination_table.num_rows))
+#destination_table = client.get_table(table_id)  # Make an API request.
+#print("Loaded {} rows.".format(destination_table.num_rows))
 
 #@app.route("/")
 #def hello_world():
@@ -102,9 +102,18 @@ def index():
         name = base64.b64decode(pubsub_message['data']).decode('utf-8').strip()
 
     resp = f"Hello, {name}! ID: {request.headers.get('ce-id')}"
-    url = name["SelfLink"]
-    resp2 = f"this is my link: {url}"
-    print(resp2)
+    #url = name["SelfLink"]
+    #resp2 = f"this is my link: {url}"
+    print(resp)
+
+    load_job = client.load_table_from_uri(
+    uri, table_id, job_config=job_config
+    )  # Make an API request.
+
+    load_job.result()  # Waits for the job to complete.
+
+    destination_table = client.get_table(table_id)  # Make an API request.
+    print("Loaded {} rows.".format(destination_table.num_rows))
 
     return (resp, 200)
 # [END eventarc_pubsub_handler]
