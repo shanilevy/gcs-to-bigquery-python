@@ -105,18 +105,18 @@ def index():
     #print(resp)
     url = "gs://"+data['message']['attributes']['bucketId']+"/"+data['message']['attributes']['objectId']
     print("New file to add to BQ:",url)
-    desired_object_state = "OBJECT_FINALIZE"
-    current_object_state = data['message']['attributes']['eventType']
+    print("event type:",data['message']['attributes']['eventType'])
+    #desired_object_state = "OBJECT_FINALIZE"
 
-    if data['message']['attributes']['eventType'] == desired_object_state
-        load_job = client.load_table_from_uri(
-        url, table_id, job_config=job_config
-        )  # Make an API request.
+    #if data['message']['attributes']['eventType'] == desired_object_state
+    load_job = client.load_table_from_uri(
+    url, table_id, job_config=job_config
+    )  # Make an API request.
 
-        load_job.result()  # Waits for the job to complete.
+    load_job.result()  # Waits for the job to complete.
 
-        destination_table = client.get_table(table_id)  # Make an API request.
-        print("Loaded {} rows.".format(destination_table.num_rows))
+    destination_table = client.get_table(table_id)  # Make an API request.
+    print("Loaded {} rows.".format(destination_table.num_rows))
 
     return (resp, 200)
 # [END eventarc_pubsub_handler]
