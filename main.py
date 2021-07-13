@@ -108,17 +108,21 @@ def index():
     print("event type:",data['message']['attributes']['eventType'])
     #desired_object_state = "OBJECT_FINALIZE"
 
-    #if data['message']['attributes']['eventType'] == desired_object_state
-    load_job = client.load_table_from_uri(
-    url, table_id, job_config=job_config
-    )  # Make an API request.
+    if data['message']['attributes']['eventType'] == "OBJECT_FINALIZE":
+        load_job = client.load_table_from_uri(
+        url, table_id, job_config=job_config
+        )  # Make an API request.
 
-    load_job.result()  # Waits for the job to complete.
+        load_job.result()  # Waits for the job to complete.
 
-    destination_table = client.get_table(table_id)  # Make an API request.
-    print("Loaded {} rows.".format(destination_table.num_rows))
+        destination_table = client.get_table(table_id)  # Make an API request.
+        print("Loaded {} rows.".format(destination_table.num_rows))
 
-    return (resp, 200)
+        return (resp, 200)
+    else:
+        msg = 'not the final message'
+        print(f'error: {msg}')
+        return f'Bad Request: {msg}', 400 
 # [END eventarc_pubsub_handler]
 
 if __name__ == "__main__":
