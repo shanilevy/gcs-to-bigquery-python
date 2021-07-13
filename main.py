@@ -105,7 +105,7 @@ def index():
     #url = name["SelfLink"]
     #resp2 = f"this is my link: {url}"
     print(resp)
-    print("TESTING: ", pubsub_message['name'])
+    print("TESTING: ", pubsub_message['data']['name'])
 
     load_job = client.load_table_from_uri(
     uri, table_id, job_config=job_config
