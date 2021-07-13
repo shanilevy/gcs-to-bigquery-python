@@ -102,14 +102,12 @@ def index():
         name = base64.b64decode(pubsub_message['data']).decode('utf-8').strip()
 
     resp = f"Hello, {name}! ID: {request.headers.get('ce-id')}"
-    #url = name["SelfLink"]
-    #resp2 = f"this is my link: {url}"
-    print(resp)
+    #print(resp)
     url = "gs://tmer-dataops-bucket-123/"+data['message']['attributes']['objectId']
-    print("TESTING: ", url)
+    print("New file to add to BQ:",url)
 
     load_job = client.load_table_from_uri(
-    uri, table_id, job_config=job_config
+    url, table_id, job_config=job_config
     )  # Make an API request.
 
     load_job.result()  # Waits for the job to complete.
