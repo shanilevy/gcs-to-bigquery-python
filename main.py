@@ -105,13 +105,8 @@ def index():
     #url = name["SelfLink"]
     #resp2 = f"this is my link: {url}"
     print(resp)
-    print("TESTING1: ", pubsub_message['data'])
-    print("TESTING2: ", data['message']['attributes'])
-    print("TESTING3: ", data['message']['attributes']['objectId'])
-    print("TESTING4: ", data['message']['objectId'])
-
-    result = name.find('wikipedia')
-    print ("Substring 'wikipedia' found at index:", result )
+    url = "gs://tmer-dataops-bucket-123/"+data['message']['attributes']['objectId']
+    print("TESTING: ", url)
 
     load_job = client.load_table_from_uri(
     uri, table_id, job_config=job_config
