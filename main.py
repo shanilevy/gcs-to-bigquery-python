@@ -118,7 +118,7 @@ def index():
         destination_table = client.get_table(table_id)  # Make an API request.
         print("Loaded {} rows.".format(destination_table.num_rows))
 
-        pubsub_message['data'].ack()
+        #pubsub_message['data'].ack()
 
         return (resp, 200)
     else:
