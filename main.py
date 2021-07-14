@@ -23,6 +23,7 @@ from flask import Flask, request
 
 from google.cloud import bigquery
 from google.oauth2 import service_account
+from google.cloud import pubsub_v1
 
 project_id = "dataops-319100"
 
@@ -118,7 +119,7 @@ def index():
         destination_table = client.get_table(table_id)  # Make an API request.
         print("Loaded {} rows.".format(destination_table.num_rows))
 
-        data['message'].ack()
+        pubsub_message.ack()
 
         return (resp, 200)
     else:
