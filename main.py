@@ -122,35 +122,39 @@ def index():
         name = base64.b64decode(pubsub_message['data']).decode('utf-8').strip()
 
     resp = f"Hello, {name}! ID: {request.headers.get('ce-id')}"
-    #print(resp)
-    url = "gs://"+data['message']['attributes']['bucketId']+"/"+data['message']['attributes']['objectId']
-    print("New file to add to BQ:",url)
-    print("event type:",data['message']['attributes']['eventType'])
-    #desired_object_state = "OBJECT_FINALIZE"
+    print(resp)
+    
+    if data['message']['attributes']['bucketId']: 
+        url = "gs://"+data['message']['attributes']['bucketId']+"/"+data['message']['attributes']['objectId']
+        print("New file to add to BQ:",url)
+        print("event type:",data['message']['attributes']['eventType'])
+        #desired_object_state = "OBJECT_FINALIZE"
 
-    if data['message']['attributes']['eventType'] == "OBJECT_FINALIZE":
-        load_job = client.load_table_from_uri(
-        url, table_id, job_config=job_config
-        )  # Make an API request.
+        if data['message']['attributes']['eventType'] == "OBJECT_FINALIZE":
+            load_job = client.load_table_from_uri(
+            url, table_id, job_config=job_config
+            )  # Make an API request.
 
-        load_job.result()  # Waits for the job to complete.
+            load_job.result()  # Waits for the job to complete.
 
-        destination_table = client.get_table(table_id)  # Make an API request.
-        print("Loaded {} rows.".format(destination_table.num_rows))
-        
-        #ack_ids = [msg.ack_id for msg in response.received_messages]
-        #subscriber.acknowledge(
-        #    request={
-        #        "subscription": subscription_path,
-        #        "ack_ids": ack_ids,
-        #    }
-        #)
+            destination_table = client.get_table(table_id)  # Make an API request.
+            print("Loaded {} rows.".format(destination_table.num_rows))
+            
+            #ack_ids = [msg.ack_id for msg in response.received_messages]
+            #subscriber.acknowledge(
+            #    request={
+            #        "subscription": subscription_path,
+            #        "ack_ids": ack_ids,
+            #    }
+            #)
 
-        return (resp, 200)
+            return (resp, 200)
+        else:
+            msg = 'not a create object message'
+            print(f'error: {msg}')
+            return f'Bad Request: {msg}', 400 
     else:
-        msg = 'not a create object message'
-        print(f'error: {msg}')
-        return f'Bad Request: {msg}', 400 
+            return f'Not the right message: {msg}', 400
 # [END eventarc_pubsub_handler]
 
 if __name__ == "__main__":
