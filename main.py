@@ -23,17 +23,17 @@ from flask import Flask, request
 
 from google.cloud import bigquery
 from google.oauth2 import service_account
-from google.cloud import pubsub_v1
+#from google.cloud import pubsub_v1
 
 
 project_id = "dataops-319100"
 subscirption = "gcs-new-file-sub"
 
-subscriber_client = pubsub_v1.SubscriberClient()
+#subscriber_client = pubsub_v1.SubscriberClient()
 
 # existing subscription
-subscription = subscriber_client.subscription_path(
-    project_id, subscirption)
+#subscription = subscriber_client.subscription_path(
+#    project_id, subscirption)
 
 app = Flask(__name__)
 
