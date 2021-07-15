@@ -125,7 +125,7 @@ def index():
     print(resp)
     print("data message:",data['message'])
     
-    if data['message']['attributes']: 
+    if 'attributes' in data: 
         url = "gs://"+data['message']['attributes']['bucketId']+"/"+data['message']['attributes']['objectId']
         print("New file to add to BQ:",url)
         print("event type:",data['message']['attributes']['eventType'])
