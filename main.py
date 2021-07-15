@@ -30,22 +30,6 @@ project_id = "dataops-319100"
 subscirption_id = "gcs-new-file-sub"
 MAX_MESSAGES = 1000
 
-subscriber = pubsub_v1.SubscriberClient()
-
-# existing subscription
-subscription_path = subscriber.subscription_path(
-    project_id, subscirption_id)
-
-response = subscriber.pull(
-    request={
-        "subscription": subscription_path,
-        "max_messages": MAX_MESSAGES,
-    }
-)
-
-for msg in response.received_messages:
-    print("Received message:", msg.message.data)
-
 app = Flask(__name__)
 
 #key_path = "credentials.json"
@@ -104,6 +88,22 @@ uri = "gs://tmer-dataops-bucket-123/wikipedia_pageviews_2021-000000000006.csv"
 # [START eventarc_pubsub_handler]
 @app.route('/', methods=['POST'])
 def index():
+    subscriber = pubsub_v1.SubscriberClient()
+
+    # existing subscription
+    subscription_path = subscriber.subscription_path(
+        project_id, subscirption_id)
+
+    response = subscriber.pull(
+        request={
+            "subscription": subscription_path,
+            "max_messages": MAX_MESSAGES,
+        }
+    )
+
+    for msg in response.received_messages:
+        print("Received message:", msg.message.data)
+
     data = request.get_json()
     if not data:
         msg = 'no Pub/Sub message received'
