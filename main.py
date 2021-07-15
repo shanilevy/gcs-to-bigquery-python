@@ -27,14 +27,24 @@ from google.cloud import pubsub_v1
 
 
 project_id = "dataops-319100"
-subscirption = "gcs-new-file-sub"
+subscirption_id = "gcs-new-file-sub"
 MAX_MESSAGES = 1000
 
-subscriber_client = pubsub_v1.SubscriberClient()
+subscriber = pubsub_v1.SubscriberClient()
 
 # existing subscription
-subscription = subscriber_client.subscription_path(
-    project_id, subscirption)
+subscription_path = subscriber.subscription_path(
+    project_id, subscirption_id)
+
+response = subscriber.pull(
+    request={
+        "subscription": subscription_path,
+        "max_messages": MAX_MESSAGES,
+    }
+)
+
+for msg in response.received_messages:
+    print("Received message:", msg.message.data)
 
 app = Flask(__name__)
 
@@ -128,15 +138,12 @@ def index():
         destination_table = client.get_table(table_id)  # Make an API request.
         print("Loaded {} rows.".format(destination_table.num_rows))
         
-        response = subscriber_client.pull(subscription, MAX_MESSAGES)
-
-        ack_ids = []
-        for received_message in response.received_messages:
-            ack_ids.append(received_message.ack_id)
-
-        # Acknowledges the received messages so they will not be sent again.
-        subscriber_client.acknowledge(
-            request={"subscription": subscription, "ack_ids": ack_ids}
+        ack_ids = [msg.ack_id for msg in response.received_messages]
+        subscriber.acknowledge(
+            request={
+                "subscription": subscription_path,
+                "ack_ids": ack_ids,
+            }
         )
 
         return (resp, 200)
