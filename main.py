@@ -28,6 +28,7 @@ from google.cloud import pubsub_v1
 
 project_id = "dataops-319100"
 subscirption = "gcs-new-file-sub"
+MAX_MESSAGES = 1000
 
 subscriber_client = pubsub_v1.SubscriberClient()
 
@@ -126,12 +127,21 @@ def index():
 
         destination_table = client.get_table(table_id)  # Make an API request.
         print("Loaded {} rows.".format(destination_table.num_rows))
+        
+        response = subscriber_client.pull(subscription, MAX_MESSAGES)
 
-        #pubsub_message['data'].ack()
+        ack_ids = []
+        for received_message in response.received_messages:
+            ack_ids.append(received_message.ack_id)
+
+        # Acknowledges the received messages so they will not be sent again.
+        subscriber_client.acknowledge(
+            request={"subscription": subscription, "ack_ids": ack_ids}
+        )
 
         return (resp, 200)
     else:
-        msg = 'not the final message'
+        msg = 'not a create object message'
         print(f'error: {msg}')
         return f'Bad Request: {msg}', 400 
 # [END eventarc_pubsub_handler]
