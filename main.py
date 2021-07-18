@@ -88,21 +88,21 @@ uri = "gs://tmer-dataops-bucket-123/wikipedia_pageviews_2021-000000000006.csv"
 # [START eventarc_pubsub_handler]
 @app.route('/', methods=['POST'])
 def index():
-    subscriber = pubsub_v1.SubscriberClient()
+    #subscriber = pubsub_v1.SubscriberClient()
 
     # existing subscription
-    subscription_path = subscriber.subscription_path(
-        project_id, subscirption_id)
+    #subscription_path = subscriber.subscription_path(
+    #    project_id, subscirption_id)
 
-    response = subscriber.pull(
-        request={
-            "subscription": subscription_path,
-            "max_messages": MAX_MESSAGES,
-        }
-    )
+    #response = subscriber.pull(
+    #    request={
+    #        "subscription": subscription_path,
+    #        "max_messages": MAX_MESSAGES,
+    #    }
+    #)
 
-    for msg in response.received_messages:
-        print("Received message:", msg.message.data)
+    #for msg in response.received_messages:
+    #    print("Received message:", msg.message.data)
 
     data = request.get_json()
     if not data:
@@ -122,10 +122,10 @@ def index():
         name = base64.b64decode(pubsub_message['data']).decode('utf-8').strip()
 
     resp = f"Hello, {name}! ID: {request.headers.get('ce-id')}"
-    print(resp)
+    #print(resp)
     print("data message:",data['message'])
     
-    if 'attributes' in data: 
+    #if 'attributes' in data: 
         url = "gs://"+data['message']['attributes']['bucketId']+"/"+data['message']['attributes']['objectId']
         print("New file to add to BQ:",url)
         print("event type:",data['message']['attributes']['eventType'])
@@ -154,8 +154,8 @@ def index():
             msg = 'not a create object message'
             print(f'error: {msg}')
             return f'Bad Request: {msg}', 400 
-    else:
-            return f'Not the right message: {msg}', 400
+    #else:
+    #        return f'Not the right message: {msg}', 400
 # [END eventarc_pubsub_handler]
 
 if __name__ == "__main__":
