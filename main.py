@@ -125,7 +125,7 @@ def index():
     #print(resp)
     print("data message:",data['message'])
     
-    #if 'attributes' in data: 
+    if 'attributes' in data: 
         url = "gs://"+data['message']['attributes']['bucketId']+"/"+data['message']['attributes']['objectId']
         print("New file to add to BQ:",url)
         print("event type:",data['message']['attributes']['eventType'])
@@ -154,8 +154,8 @@ def index():
             msg = 'not a create object message'
             print(f'error: {msg}')
             return f'Bad Request: {msg}', 400 
-    #else:
-    #        return f'Not the right message: {msg}', 400
+    else:
+            return f'Not the right message: {msg}', 400
 # [END eventarc_pubsub_handler]
 
 if __name__ == "__main__":
