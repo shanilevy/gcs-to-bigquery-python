@@ -126,6 +126,7 @@ def index():
     
     if 'attributes' in data['message']: 
         url = "gs://"+data['message']['attributes']['bucketId']+"/"+data['message']['attributes']['objectId']
+        
         print("New file to add to BQ:",url)
         print("event type:",data['message']['attributes']['eventType'])
         #desired_object_state = "OBJECT_FINALIZE"
