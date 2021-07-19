@@ -88,7 +88,6 @@ uri = "gs://tmer-dataops-bucket-123/wikipedia_pageviews_2021-000000000006.csv"
 # [START eventarc_pubsub_handler]
 @app.route('/', methods=['POST'])
 def index():
-    
     subscriber = pubsub_v1.SubscriberClient()
 
     # existing subscription
