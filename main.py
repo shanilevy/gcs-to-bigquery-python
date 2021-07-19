@@ -94,15 +94,14 @@ def index():
     subscription_path = subscriber.subscription_path(
         project_id, subscirption_id)
 
-    response = subscriber.pull(
-        request={
-            "subscription": subscription_path,
-            "max_messages": MAX_MESSAGES,
-        }
-    )
+    response = subscriber.pull(subscription_path,MAX_MESSAGES)
+    ack_ids = []
+    
+    for received_message in response.received_messages:
+	    ack_ids.append(received_message.ack_id)
 
-    for msg in response.received_messages:
-        print("Received message:", msg.message.data)
+    #for msg in response.received_messages:
+    #    print("Received message:", msg.message.data)
 
     data = request.get_json()
     if not data:
@@ -141,12 +140,15 @@ def index():
             destination_table = client.get_table(table_id)  # Make an API request.
             print("Loaded {} rows.".format(destination_table.num_rows))
             
-            ack_ids = [msg.ack_id for msg in response.received_messages]
+            #ack_ids = [msg.ack_id for msg in response.received_messages]
+            #subscriber.acknowledge(
+            #    request={
+            #        "subscription": subscription_path,
+            #        "ack_ids": ack_ids,
+            #    }
+            #)
             subscriber.acknowledge(
-                request={
-                    "subscription": subscription_path,
-                    "ack_ids": ack_ids,
-                }
+                request={"subscription": subscription_path, "ack_ids": ack_ids}
             )
 
             return (resp, 200)
