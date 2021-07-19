@@ -88,17 +88,17 @@ uri = "gs://tmer-dataops-bucket-123/wikipedia_pageviews_2021-000000000006.csv"
 # [START eventarc_pubsub_handler]
 @app.route('/', methods=['POST'])
 def index():
-    subscriber = pubsub_v1.SubscriberClient()
+    #subscriber = pubsub_v1.SubscriberClient()
 
     # existing subscription
-    subscription_path = subscriber.subscription_path(
-        project_id, subscirption_id)
+    #subscription_path = subscriber.subscription_path(
+    #    project_id, subscirption_id)
 
-    response = subscriber.pull(subscription_path,MAX_MESSAGES)
-    ack_ids = []
+    #response = subscriber.pull(subscription_path,MAX_MESSAGES)
+    #ack_ids = []
     
-    for received_message in response.received_messages:
-	    ack_ids.append(received_message.ack_id)
+    #for received_message in response.received_messages:
+	#    ack_ids.append(received_message.ack_id)
 
     #for msg in response.received_messages:
     #    print("Received message:", msg.message.data)
@@ -147,11 +147,11 @@ def index():
             #        "ack_ids": ack_ids,
             #    }
             #)
-            subscriber.acknowledge(
-                request={"subscription": subscription_path, "ack_ids": ack_ids}
-            )
+            #subscriber.acknowledge(
+            #    request={"subscription": subscription_path, "ack_ids": ack_ids}
+            #)
 
-            return (resp, 200)
+            return (resp, 204)
         else:
             msg = 'not a create object message'
             print(f'error: {msg}')
