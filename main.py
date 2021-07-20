@@ -23,12 +23,9 @@ from flask import Flask, request
 
 from google.cloud import bigquery
 from google.oauth2 import service_account
-from google.cloud import pubsub_v1
 
 
 project_id = "dataops-319100"
-subscirption_id = "gcs-new-file-sub"
-MAX_MESSAGES = 1000
 
 app = Flask(__name__)
 
@@ -88,21 +85,6 @@ uri = "gs://tmer-dataops-bucket-123/wikipedia_pageviews_2021-000000000006.csv"
 # [START eventarc_pubsub_handler]
 @app.route('/', methods=['POST'])
 def index():
-    #subscriber = pubsub_v1.SubscriberClient()
-
-    # existing subscription
-    #subscription_path = subscriber.subscription_path(
-    #    project_id, subscirption_id)
-
-    #response = subscriber.pull(subscription_path,MAX_MESSAGES)
-    #ack_ids = []
-    
-    #for received_message in response.received_messages:
-	#    ack_ids.append(received_message.ack_id)
-
-    #for msg in response.received_messages:
-    #    print("Received message:", msg.message.data)
-
     data = request.get_json()
     if not data:
         msg = 'no Pub/Sub message received'
@@ -129,7 +111,6 @@ def index():
         
         print("New file to add to BQ:",url)
         print("event type:",data['message']['attributes']['eventType'])
-        #desired_object_state = "OBJECT_FINALIZE"
 
         if data['message']['attributes']['eventType'] == "OBJECT_FINALIZE":
             load_job = client.load_table_from_uri(
@@ -140,17 +121,6 @@ def index():
 
             destination_table = client.get_table(table_id)  # Make an API request.
             print("Loaded {} rows.".format(destination_table.num_rows))
-            
-            #ack_ids = [msg.ack_id for msg in response.received_messages]
-            #subscriber.acknowledge(
-            #    request={
-            #        "subscription": subscription_path,
-            #        "ack_ids": ack_ids,
-            #    }
-            #)
-            #subscriber.acknowledge(
-            #    request={"subscription": subscription_path, "ack_ids": ack_ids}
-            #)
 
             return (resp, 204)
         else:
