@@ -125,6 +125,21 @@ def index():
             destination_table = client.get_table(table_id)  # Make an API request.
             print("Loaded {} rows.".format(destination_table.num_rows))
 
+            base_url='https://api.dataform.co/v1/project/5709626575159296/run'
+            headers={'Authorization': 'Bearer 5106815768461312|rTI596HbFRvSvQXGKy4OvXUdjhstoEvRm115lo1felk=|1'}
+            run_create_request={"environmentName": "", "scheduleName": ""}
+
+            response = requests.post(base_url, data=json.dumps(run_create_request), headers=headers)
+
+            run_url = base_url + '/' + response.json()['id']
+
+            response = requests.get(run_url, headers=headers)
+
+            while response.json()['status'] == 'RUNNING':
+                time.sleep(10)
+                response = requests.get(run_url, headers=headers)
+                print(response.json())
+            
             return (resp, 204)
         else:
             msg = 'not a create object message'
@@ -133,20 +148,6 @@ def index():
     else:
             return f'Not the right message: {msg}', 400
     
-    base_url='https://api.dataform.co/v1/project/5709626575159296/run'
-    headers={'Authorization': 'Bearer 5106815768461312|rTI596HbFRvSvQXGKy4OvXUdjhstoEvRm115lo1felk=|1'}
-    run_create_request={"environmentName": "", "scheduleName": ""}
-
-    response = requests.post(base_url, data=json.dumps(run_create_request), headers=headers)
-
-    run_url = base_url + '/' + response.json()['id']
-
-    response = requests.get(run_url, headers=headers)
-
-    while response.json()['status'] == 'RUNNING':
-        time.sleep(10)
-        response = requests.get(run_url, headers=headers)
-        print(response.json())
 # [END eventarc_pubsub_handler]
 
 if __name__ == "__main__":
