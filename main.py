@@ -16,6 +16,9 @@
 # [START run_helloworld_service]
 import os
 import base64
+import requests
+import time
+import json
 
 from flask import Flask, request
 
@@ -129,6 +132,21 @@ def index():
             return f'Bad Request: {msg}', 400 
     else:
             return f'Not the right message: {msg}', 400
+    
+    base_url='https://api.dataform.co/v1/project/5709626575159296/run'
+    headers={'Authorization': 'Bearer 5106815768461312|rTI596HbFRvSvQXGKy4OvXUdjhstoEvRm115lo1felk=|1'}
+    run_create_request={"environmentName": "", "scheduleName": ""}
+
+    response = requests.post(base_url, data=json.dumps(run_create_request), headers=headers)
+
+    run_url = base_url + '/' + response.json()['id']
+
+    response = requests.get(run_url, headers=headers)
+
+    while response.json()['status'] == 'RUNNING':
+        time.sleep(10)
+        response = requests.get(run_url, headers=headers)
+        print(response.json())
 # [END eventarc_pubsub_handler]
 
 if __name__ == "__main__":
