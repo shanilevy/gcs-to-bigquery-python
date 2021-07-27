@@ -126,7 +126,9 @@ def index():
             print("Loaded {} rows.".format(destination_table.num_rows))
 
             base_url='https://api.dataform.co/v1/project/5709626575159296/run'
-            headers={'Authorization': 'Bearer 5106815768461312|rTI596HbFRvSvQXGKy4OvXUdjhstoEvRm115lo1felk=|1'}
+            #headers={'Authorization': 'Bearer 5106815768461312|rTI596HbFRvSvQXGKy4OvXUdjhstoEvRm115lo1felk=|1'}
+            secret = os.environ.get("df_token")
+            headers={'Authorization': 'Bearer ' + secret}
             run_create_request={"environmentName": "", "scheduleName": ""}
 
             response = requests.post(base_url, data=json.dumps(run_create_request), headers=headers)
