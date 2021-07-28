@@ -116,6 +116,16 @@ def index():
         print("event type:",data['message']['attributes']['eventType'])
 
         if data['message']['attributes']['eventType'] == "OBJECT_FINALIZE":
+            #before loading clear the staging table
+            query_job = client.query(
+                """
+                TRUNCATE TABLE `dataops-319100.dwh.wikipedia_pageviews_2021`
+                """
+            )
+
+            results = query_job.result()  # Waits for job to complete.
+            
+            #load new data from csv file into BQ table
             load_job = client.load_table_from_uri(
             url, table_id, job_config=job_config
             )  # Make an API request.
