@@ -123,7 +123,7 @@ def index():
                 """
             )
 
-            results = query_job.result()  # Waits for job to complete.
+            #results = query_job.result()  # Waits for job to complete.
             
             #load new data from csv file into BQ table
             load_job = client.load_table_from_uri(
