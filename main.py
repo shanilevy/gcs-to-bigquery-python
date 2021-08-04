@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START cloudrun_helloworld_service]
-# [START run_helloworld_service]
 import os
 import base64
 import requests
@@ -32,13 +30,6 @@ project_id = "dataops-319100"
 
 app = Flask(__name__)
 
-#key_path = "credentials.json"
-
-#credentials = service_account.Credentials.from_service_account_file(
-#    key_path, scopes=["https://www.googleapis.com/auth/cloud-platform"],
-#)
-
-#client=bigquery.Client(credentials=credentials, project=credentials.project_id,)
 
 # Construct a BigQuery client object.
 client = bigquery.Client()
@@ -57,35 +48,7 @@ job_config = bigquery.LoadJobConfig(
     # The source format defaults to CSV, so the line below is optional.
     source_format=bigquery.SourceFormat.CSV,
 )
-uri = "gs://tmer-dataops-bucket-123/wikipedia_pageviews_2021-000000000006.csv"
 
-#load_job = client.load_table_from_uri(
-#    uri, table_id, job_config=job_config
-#)  # Make an API request.
-
-#load_job.result()  # Waits for the job to complete.
-
-#destination_table = client.get_table(table_id)  # Make an API request.
-#print("Loaded {} rows.".format(destination_table.num_rows))
-
-#@app.route("/")
-#def hello_world():
-#    name = os.environ.get("NAME", "World")
-#    return "Hello {}!".format(name)
-#@app.route("/", methods=["POST"])
-#def home():
-    # create a CloudEvent
-#    print("This is POST command")
-#    event = from_http(request.headers, request.get_data())
-
-    # you can access cloudevent fields as seen below
-#    print(
-#        f"Found {event['id']} from {event['source']} with type "
-#        f"{event['type']} and specversion {event['specversion']}"
-#    )
-
- #   return "", 204
-# [START eventarc_pubsub_handler]
 @app.route('/', methods=['POST'])
 def index():
     data = request.get_json()
@@ -135,6 +98,7 @@ def index():
             destination_table = client.get_table(table_id)  # Make an API request.
             print("Loaded {} rows.".format(destination_table.num_rows))
 
+            #after loading the csv file into BQ - calling dataform API to perform the transformation
             base_url='https://api.dataform.co/v1/project/5709626575159296/run'
             secret = os.environ.get("df_token")
             headers={'Authorization': 'Bearer ' + secret}
@@ -159,10 +123,6 @@ def index():
     else:
             return f'Not the right message: {msg}', 400
     
-# [END eventarc_pubsub_handler]
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
-    #app.run(port=8080)
-# [END run_helloworld_service]
-# [END cloudrun_helloworld_service]
