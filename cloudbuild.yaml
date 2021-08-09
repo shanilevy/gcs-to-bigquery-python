@@ -9,8 +9,8 @@ steps:
     # Docker Build
     - name: 'gcr.io/cloud-builders/docker'
       id: "Build Container"
-      args: ['build', '--tag=gcr.io/dataops-319100/gcs-bq-image:latest', '.']
-      #args: ['build', '--tag=gcr.io/dataops-319100/gcs-bq-image:$SHORT_SHA', '.']
+      #args: ['build', '--tag=gcr.io/dataops-319100/gcs-bq-image:latest', '.']
+      args: ['build', '--tag=gcr.io/dataops-319100/gcs-bq-image:$SHORT_SHA', '.']
     # [END cloudbuild_python_image_yaml]
   
     # [START cloudbuild_python_push_yaml]
@@ -23,4 +23,4 @@ steps:
     # Deploy container image to Cloud Run
     - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
       entrypoint: gcloud
-      args: ['run', 'deploy', 'gcs-to-bq', '--image', 'gcr.io/dataops-319100/gcs-bq-image:latest', '--region', 'us-central1', '--platform', 'managed']
+      args: ['run', 'deploy', 'gcs-to-bq', '--image', 'gcr.io/dataops-319100/gcs-bq-image:$SHORT_SHA', '--region', 'us-central1', '--platform', 'managed']

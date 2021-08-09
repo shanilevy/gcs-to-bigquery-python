@@ -30,6 +30,8 @@ project_id = "dataops-319100"
 
 app = Flask(__name__)
 
+version = "1.0"
+
 
 # Construct a BigQuery client object.
 client = bigquery.Client()
