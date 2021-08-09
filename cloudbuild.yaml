@@ -17,7 +17,7 @@ steps:
     # Docker push to Google Artifact Registry
     - name: 'gcr.io/cloud-builders/docker'
       id: "Push Container"
-      args: ['push', 'gcr.io/dataops-319100/gcs-bq-image:latest']
+      args: ['push', 'gcr.io/dataops-319100/gcs-bq-image:$SHORT_SHA']
     # [END cloudbuild_python_push_yaml]
     
     # Deploy container image to Cloud Run
