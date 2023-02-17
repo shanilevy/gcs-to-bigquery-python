@@ -101,7 +101,7 @@ def index():
             print("Loaded {} rows.".format(destination_table.num_rows))
 
             #after loading the csv file into BQ - calling dataform API to perform the transformation
-            base_url='https://api.dataform.co/v1/project/5709626575159296/run'
+            base_url='https://api.dataform.co/v1/project/6283092602912768/run'
             secret = os.environ.get("df_token")
             headers={'Authorization': 'Bearer ' + secret}
             run_create_request={"environmentName": "", "scheduleName": ""}
