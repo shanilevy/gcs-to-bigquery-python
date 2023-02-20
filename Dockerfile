@@ -1,4 +1,4 @@
-FROM python:3.10-slim-bullseye
+FROM python:3.9-slim
 
 RUN python3 -m venv /opt/venv
 
