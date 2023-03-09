@@ -13,5 +13,5 @@ The main files in this repository are:
 * `cloudbuild.yaml` Cloud Build YAML file that is building the container, pushing it to Cloud Registry and deploying it into Cloud Run
 
 ![Screenshot](Pipeline.jpg)
-
+![Screenshot](DataOps.jpg)
 
