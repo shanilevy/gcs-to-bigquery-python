@@ -1,16 +1,17 @@
-# Hello, World (Python/Flask)
+# GCS to BigQuery in Python
 
-This is a Python/Flask template for building a microservice in Kubernetes and Docker. This template is designed for use with [Forge](https://forge.sh), [Telepresence](https://www.telepresence.io), and [Ambassador](https://www.getambassador.io).
+This is a Python code which is taking data deployed into GCS, building a schema and a table in BQ and inserting the data into the table
+The code is build using Cloud Build and deployed as a container into Cloud Registry. Every change in the code will trigger the build for a new version of the Container.
+It is then Deployed and run in Cloud Run in a serverless environment
 
 # Repository structure
 
 The main files in this repository are:
 
+* `main.py` python code
 * `Dockerfile` specifies how the application is built and packaged
-* `k8s/deployment.yaml` contains a templated Kubernetes manifest, with additional annotations for configuring Ambassador
-* `service.yaml` contains values (typically configured by a developer) that will be instantiated into the Kubernetes manifest
-* `app.py` is the actual Python/Flask application
+* `cloudbuild.yaml` Cloud Build YAML file that is building the container, pushing it to Cloud Registry and deploying it into Cloud Run
 
-# License
+![alt text](https://github.com/shanilevy/gcs-to-bigquery-python/blob/main/pipeline.jpg?raw=true)
 
-Licensed under Apache 2.0. Please see [LICENSE](LICENSE) for details.
+
