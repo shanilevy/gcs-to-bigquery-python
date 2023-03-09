@@ -12,6 +12,6 @@ The main files in this repository are:
 * `Dockerfile` specifies how the application is built and packaged
 * `cloudbuild.yaml` Cloud Build YAML file that is building the container, pushing it to Cloud Registry and deploying it into Cloud Run
 
-![alt text](https://github.com/shanilevy/gcs-to-bigquery-python/blob/main/pipeline.jpg?raw=true)
+![Screenshot](Pipeline.jpg)
 
 
