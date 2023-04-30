@@ -15,7 +15,7 @@ steps:
     - name: 'gcr.io/cloud-builders/docker'
       id: "Build Container"
       #args: ['build', '--tag=gcr.io/$PROJECT_ID/gcs-bq-image:latest', '.']
-      args: ['build', '--tag=gcr.io/dataops-terraform/gcs-bq-image:$SHORT_SHA', '.']
+      args: ['build', '--tag=gcr.io/$PROJECT_ID/gcs-bq-image:$SHORT_SHA', '.']
     # [END cloudbuild_python_image_yaml]
   
     # [START cloudbuild_python_push_yaml]
