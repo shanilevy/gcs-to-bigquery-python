@@ -26,7 +26,7 @@ from google.cloud import bigquery
 from google.oauth2 import service_account
 
 
-project_id = "dataops-319100"
+project_id = "dataops-terraform"
 
 app = Flask(__name__)
 
@@ -37,7 +37,7 @@ version = "1.0"
 client = bigquery.Client()
     
 # TODO(developer): Set table_id to the ID of the table to create.
-table_id="dataops-319100.dwh.wikipedia_pageviews_2021"
+table_id="dataops-terraform.dwh.wikipedia_pageviews_2021"
 
 job_config = bigquery.LoadJobConfig(
     schema=[
@@ -84,7 +84,7 @@ def index():
             #before loading clear the staging table
             query_job = client.query(
                 """
-                TRUNCATE TABLE `dataops-319100.dwh.wikipedia_pageviews_2021`
+                TRUNCATE TABLE `dataops-terraform.dwh.wikipedia_pageviews_2021`
                 """
             )
 
