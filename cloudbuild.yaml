@@ -3,13 +3,18 @@ steps:
     - name: python
       entrypoint: pip
       args: ["install", "-r", "requirements.txt", "--user"]
+      env:
+      - 'BUILD=$BUILD_ID'
+      - 'PROJECT_ID=$PROJECT_ID'
+      - 'PROJECT_NUMBER=$PROJECT_NUMBER'
+      - 'REV=$REVISION_ID'
     # [END cloudbuild_python_dependencies_yaml]
 
     # [START cloudbuild_python_image_yaml]
     # Docker Build
     - name: 'gcr.io/cloud-builders/docker'
       id: "Build Container"
-      #args: ['build', '--tag=gcr.io/dataops-terraform/gcs-bq-image:latest', '.']
+      #args: ['build', '--tag=gcr.io/$PROJECT_ID/gcs-bq-image:latest', '.']
       args: ['build', '--tag=gcr.io/dataops-terraform/gcs-bq-image:$SHORT_SHA', '.']
     # [END cloudbuild_python_image_yaml]
   
@@ -17,10 +22,10 @@ steps:
     # Docker push to Google Artifact Registry
     - name: 'gcr.io/cloud-builders/docker'
       id: "Push Container"
-      args: ['push', 'gcr.io/dataops-terraform/gcs-bq-image:$SHORT_SHA']
+      args: ['push', 'gcr.io/$PROJECT_ID/gcs-bq-image:$SHORT_SHA']
     # [END cloudbuild_python_push_yaml]
     
     # Deploy container image to Cloud Run
     - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
       entrypoint: gcloud
-      args: ['run', 'deploy', 'gcs-to-bq', '--image', 'gcr.io/dataops-terraform/gcs-bq-image:$SHORT_SHA', '--region', 'us-central1', '--platform', 'managed']
+      args: ['run', 'deploy', 'gcs-to-bq', '--image', 'gcr.io/$PROJECT_ID/gcs-bq-image:$SHORT_SHA', '--region', 'us-central1', '--platform', 'managed']
