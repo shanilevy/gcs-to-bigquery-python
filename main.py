@@ -30,6 +30,7 @@ from google.cloud.workflows.executions_v1.types import executions
 
 
 project_id = "dataops-terraform"
+project = 'dataops-terraform'
 location = 'us-central1'
 workflow = 'dataform-workflow' 
 
@@ -133,7 +134,7 @@ def index():
             #     print(response.json())
             
             # return (resp, 204)
-            
+
             # Execute the workflow.
             response = execution_client.create_execution(request={"parent": parent})
             print(f"Created execution: {response.name}")
