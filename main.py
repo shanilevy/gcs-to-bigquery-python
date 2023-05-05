@@ -24,9 +24,24 @@ from flask import Flask, request
 
 from google.cloud import bigquery
 from google.oauth2 import service_account
+from google.cloud import workflows_v1
+from google.cloud.workflows import executions_v1
+from google.cloud.workflows.executions_v1.types import executions
 
 
 project_id = "dataops-terraform"
+location = 'us-central1'
+workflow = 'dataform-workflow' 
+
+if not project:
+    raise Exception('GOOGLE_CLOUD_PROJECT env var is required.')
+
+# Set up API clients.
+execution_client = executions_v1.ExecutionsClient()
+workflows_client = workflows_v1.WorkflowsClient()
+
+# Construct the fully qualified location path.
+parent = workflows_client.workflow_path(project, location, workflow)
 
 app = Flask(__name__)
 
@@ -118,6 +133,30 @@ def index():
             #     print(response.json())
             
             # return (resp, 204)
+            
+            # Execute the workflow.
+            response = execution_client.create_execution(request={"parent": parent})
+            print(f"Created execution: {response.name}")
+
+            # Wait for execution to finish, then print results.
+            execution_finished = False
+            backoff_delay = 1  # Start wait with delay of 1 second
+            print('Poll every second for result...')
+            while (not execution_finished):
+                execution = execution_client.get_execution(
+                    request={"name": response.name})
+                execution_finished = execution.state != executions.Execution.State.ACTIVE
+
+                # If we haven't seen the result yet, wait a second.
+                if not execution_finished:
+                    print('- Waiting for results...')
+                    time.sleep(backoff_delay)
+                    # Double the delay to provide exponential backoff.
+                    backoff_delay *= 2
+                else:
+                    print(f'Execution finished with state: {execution.state.name}')
+                    print(f'Execution results: {execution.result}')
+                    return execution
         else:
             msg = 'not a create object message'
             print(f'error: {msg}')
