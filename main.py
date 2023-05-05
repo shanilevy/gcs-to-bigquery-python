@@ -188,7 +188,7 @@ def index():
             repo_name = 'dataform_gcs_to_bq_repository'
             bq_dataset = 'dwh'
             branch = 'bq-branch'
-            run_workflow(project_id, location, repo_name, bq_dataset, branch)
+            #run_workflow(project_id, location, repo_name, bq_dataset, branch)
 
         else:
             msg = 'not a create object message'
