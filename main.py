@@ -53,7 +53,7 @@ version = "1.0"
 client = bigquery.Client()
     
 # TODO(developer): Set table_id to the ID of the table to create.
-table_id="dataops-terraform.dwh.wikipedia_pageviews_2021"
+table_id="{project}.dwh.wikipedia_pageviews_2021"
 
 job_config = bigquery.LoadJobConfig(
     schema=[
@@ -100,7 +100,7 @@ def index():
             #before loading clear the staging table
             query_job = client.query(
                 """
-                TRUNCATE TABLE `dataops-terraform.dwh.wikipedia_pageviews_2021`
+                TRUNCATE TABLE `{project}.dwh.wikipedia_pageviews_2021`
                 """
             )
 
