@@ -134,30 +134,30 @@ def index():
             #     print(response.json())
             
             # return (resp, 204)
+            if destination_table.num_rows > 0:
+                # Execute the workflow.
+                response = execution_client.create_execution(request={"parent": parent})
+                print(f"Created execution: {response.name}")
 
-            # Execute the workflow.
-            response = execution_client.create_execution(request={"parent": parent})
-            print(f"Created execution: {response.name}")
+                # Wait for execution to finish, then print results.
+                execution_finished = False
+                backoff_delay = 1  # Start wait with delay of 1 second
+                print('Poll every second for result...')
+                while (not execution_finished):
+                    execution = execution_client.get_execution(
+                        request={"name": response.name})
+                    execution_finished = execution.state != executions.Execution.State.ACTIVE
 
-            # Wait for execution to finish, then print results.
-            execution_finished = False
-            backoff_delay = 1  # Start wait with delay of 1 second
-            print('Poll every second for result...')
-            while (not execution_finished):
-                execution = execution_client.get_execution(
-                    request={"name": response.name})
-                execution_finished = execution.state != executions.Execution.State.ACTIVE
-
-                # If we haven't seen the result yet, wait a second.
-                if not execution_finished:
-                    print('- Waiting for results...')
-                    time.sleep(backoff_delay)
-                    # Double the delay to provide exponential backoff.
-                    backoff_delay *= 2
-                else:
-                    print(f'Execution finished with state: {execution.state.name}')
-                    print(f'Execution results: {execution.result}')
-                    return execution
+                    # If we haven't seen the result yet, wait a second.
+                    if not execution_finished:
+                        print('- Waiting for results...')
+                        time.sleep(backoff_delay)
+                        # Double the delay to provide exponential backoff.
+                        backoff_delay *= 2
+                    else:
+                        print(f'Execution finished with state: {execution.state.name}')
+                        print(f'Execution results: {execution.result}')
+                        return execution
         else:
             msg = 'not a create object message'
             print(f'error: {msg}')
