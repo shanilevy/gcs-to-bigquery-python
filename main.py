@@ -157,7 +157,8 @@ def index():
                 else:
                     print(f'Execution finished with state: {execution.state.name}')
                     print(f'Execution results: {execution.result}')
-                    return execution
+                    #return execution
+                    return jsonpickle.encode(execution)
         else:
             msg = 'not a create object message'
             print(f'error: {msg}')
