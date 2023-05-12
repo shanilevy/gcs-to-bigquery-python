@@ -18,7 +18,7 @@ import requests
 import time
 import json
 
-from flask import Flask, request
+from flask import Flask, request, make_response
 
 #from cloudevents.http import from_http
 
@@ -158,7 +158,8 @@ def index():
                     print(f'Execution finished with state: {execution.state.name}')
                     print(f'Execution results: {execution.result}')
                     #return execution
-                    return jsonpickle.encode(execution)
+                    #return jsonpickle.encode(execution)
+                    return make_response(execution) 
         else:
             msg = 'not a create object message'
             print(f'error: {msg}')
