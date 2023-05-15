@@ -30,7 +30,7 @@ from google.cloud.workflows.executions_v1.types import executions
 
 
 #project_id = "dataops-terraform-example"
-project_id = os.getenv("GOOGLE_CLOUD_PROJECT", get_project_id())
+project_id = os.getenv("GCP_PROJECT")
 location = 'us-central1'
 workflow = 'dataform-workflow' 
 
