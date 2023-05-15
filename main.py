@@ -29,12 +29,12 @@ from google.cloud.workflows import executions_v1
 from google.cloud.workflows.executions_v1.types import executions
 
 
-project_id = "dataops-terraform-example"
-project = 'dataops-terraform-example'
+#project_id = "dataops-terraform-example"
+project_id = os.getenv("GOOGLE_CLOUD_PROJECT", get_project_id())
 location = 'us-central1'
 workflow = 'dataform-workflow' 
 
-if not project:
+if not project_id:
     raise Exception('GOOGLE_CLOUD_PROJECT env var is required.')
 
 # Set up API clients.
@@ -42,7 +42,7 @@ execution_client = executions_v1.ExecutionsClient()
 workflows_client = workflows_v1.WorkflowsClient()
 
 # Construct the fully qualified location path.
-parent = workflows_client.workflow_path(project, location, workflow)
+parent = workflows_client.workflow_path(project_id, location, workflow)
 
 app = Flask(__name__)
 
