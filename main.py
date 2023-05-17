@@ -157,6 +157,7 @@ def index():
                 else:
                     print(f'Execution finished with state: {execution.state.name}')
                     print(f'Execution results: {execution.result}')
+                    return 200
                     #return execution
                     #return jsonpickle.encode(execution)
                     #return make_response(execution) 
