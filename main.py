@@ -113,8 +113,18 @@ def index():
 
             load_job.result()  # Waits for the job to complete.
 
+            delay = 1 
+            while load_job.result().state != 'DONE':
+                print('- Waiting for rows to be loaded into the table...')
+                time.sleep(10)
+                delay += 1
+                if delay > 8:
+                    return f'Problem with loading the table', 400 
+
+
             destination_table = client.get_table(table_id)  # Make an API request.
             print("Loaded {} rows.".format(destination_table.num_rows))
+
 
             #after loading the csv file into BQ - calling dataform API to perform the transformation
             # base_url='https://api.dataform.co/v1/project/6283092602912768/run'
