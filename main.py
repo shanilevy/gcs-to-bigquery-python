@@ -98,11 +98,11 @@ def index():
 
         if data['message']['attributes']['eventType'] == "OBJECT_FINALIZE":
             #before loading clear the staging table
-            query_job = client.query(
-                """
-                TRUNCATE TABLE `dataops-terraform-example.dwh.wikipedia_pageviews_2021`
-                """
-            )
+            # query_job = client.query(
+            #     """
+            #     TRUNCATE TABLE `dataops-terraform-example.dwh.wikipedia_pageviews_2021`
+            #     """
+            # )
 
             #results = query_job.result()  # Waits for job to complete.
             
